@@ -36,19 +36,18 @@ function ntz(x) {         // Number of trailing zeros.
 edition, section 3.1 problem 6, where it is attributed to
 R. W. Floyd.  */
 
-function cycle_floyd (f, start) {
+function cycle_floyd (f, first_val) {
 
     // Search for a repeating element, i.e., one for which
     // X[n] = X[2n] with n >= 1.
 
-    var Xi = start
-    var X2i = start
+    var lo_v = first_val
+    var hi_v = first_val
     var i
     for (i = 1; ; i++) {
-        Xi = f(Xi)
-        X2i = f(f(X2i))
-        console.log('Xi:', Xi, 'X2i', X2i )
-        if (Xi === X2i) break
+        lo_v = f(lo_v)
+        hi_v = f(f(hi_v))
+        if (lo_v === hi_v) break
     }
     // var n = i                       // Set the position and
     // var Xn = Xi                     // value of X[n], the re-
@@ -57,11 +56,11 @@ function cycle_floyd (f, start) {
     // Now find the first element of the repeating part.
     // by finding first place where X[i] = X[n+i].
 
-    var Xnpi = Xi
-    Xi = start
+    var Xnpi = lo_v
+    lo_v = first_val
     for (i = 0; ; i++) {
-        if (Xi === Xnpi) break
-        Xi = f(Xi)
+        if (lo_v === Xnpi) break
+        lo_v = f(lo_v)
         Xnpi = f(Xnpi)
     }
 
@@ -72,12 +71,12 @@ function cycle_floyd (f, start) {
     // mu on to see where it first repeats.  (This is not
     // the method suggested by Knuth.)
 
-    var Xmu = Xi
+    var Xmu = lo_v
     console.log('Xmu', Xmu)
     for (i = 1; ; i++) {
-        Xi = f(Xi)               // Really X[i+mu].
-        console.log('Xi:', Xi)
-        if (Xi === Xmu) break
+        lo_v = f(lo_v)               // Really X[i+mu].
+        console.log('Xi:', lo_v)
+        if (lo_v === Xmu) break
     }
     ret.lambda = i                 // Give lambda to caller.
     return ret
@@ -89,12 +88,13 @@ first value (not index) at which the repeated subsequence
 begins, and the last value of the repeated subsequence.
 */
 
-function main (start, mu, lambda) {
-    lambda >= mu || err('X1 must be greater than X2')
+function main (first_val, mu_v, lambda_v, len) {
+    console.log(first_val, mu_v, lambda_v, len)
+    lambda_v >= mu_v || err('X1 must be greater than X2')
 
-    var f = cycle_fn(mu, lambda)
-    var series = [start]
-    for (var i = 0, x = start; i < 17; i++) {
+    var f = cycle_fn(mu_v, lambda_v)
+    var series = [first_val]
+    for (var i = 0, x = first_val; i < len; i++) {
         series.push(x = f(x))
     }
     console.log(series)
@@ -102,9 +102,11 @@ function main (start, mu, lambda) {
     // Find the first repeated element and the period.
 
 
-    console.log(cycle_floyd(f, start))
+
+    var ret = cycle_floyd(f, first_val)
+    return [ ret.mu, ret.lambda ]
 }
 
 function err (msg) { throw new Error(msg) }
 
-console.log(main (1, 1, 9))
+module.exports = main
