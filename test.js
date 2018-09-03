@@ -15,8 +15,6 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 var test = require('test-kit').tape()
-var mod = require('.')
-
 var floyd = require('./floyd')
 
 test('floyd', function (t) {
@@ -29,4 +27,13 @@ test('floyd', function (t) {
     ], floyd )
 })
 
+test('floyd', function (t) {
+    t.table_assert([
+        [ 'start_v',    'mu_v',   'lamda_v',  'len',  'exp' ],
+        [ 1,            3,        5,            17,     [2, 3] ],
+        [ 1,            3,        7,            17,     [2, 5] ],
+        [ 1,            4,        7,            17,     [3, 4] ],
+        [ 1,            6,        7,            17,     [5, 2] ],
+    ], floyd )
+})
 

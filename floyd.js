@@ -36,7 +36,7 @@ function ntz(x) {         // Number of trailing zeros.
 edition, section 3.1 problem 6, where it is attributed to
 R. W. Floyd.  */
 
-function cycle_floyd (f, first_val) {
+function cycle_floyd (fn, first_val) {
 
     // Search for a repeating element, i.e., one for which
     // X[n] = X[2n] with n >= 1.
@@ -45,8 +45,8 @@ function cycle_floyd (f, first_val) {
     var hi_v = first_val
     var i
     for (i = 1; ; i++) {
-        lo_v = f(lo_v)
-        hi_v = f(f(hi_v))
+        lo_v = fn(lo_v)
+        hi_v = fn(fn(hi_v))
         if (lo_v === hi_v) break
     }
     // var n = i                       // Set the position and
@@ -60,8 +60,8 @@ function cycle_floyd (f, first_val) {
     lo_v = first_val
     for (i = 0; ; i++) {
         if (lo_v === Xnpi) break
-        lo_v = f(lo_v)
-        Xnpi = f(Xnpi)
+        lo_v = fn(lo_v)
+        Xnpi = fn(Xnpi)
     }
 
     var ret = {}
@@ -72,10 +72,8 @@ function cycle_floyd (f, first_val) {
     // the method suggested by Knuth.)
 
     var Xmu = lo_v
-    console.log('Xmu', Xmu)
     for (i = 1; ; i++) {
-        lo_v = f(lo_v)               // Really X[i+mu].
-        console.log('Xi:', lo_v)
+        lo_v = fn(lo_v)               // Really X[i+mu].
         if (lo_v === Xmu) break
     }
     ret.lambda = i                 // Give lambda to caller.
@@ -88,22 +86,21 @@ first value (not index) at which the repeated subsequence
 begins, and the last value of the repeated subsequence.
 */
 
-function main (first_val, mu_v, lambda_v, len) {
-    console.log(first_val, mu_v, lambda_v, len)
-    lambda_v >= mu_v || err('X1 must be greater than X2')
-
-    var f = cycle_fn(mu_v, lambda_v)
-    var series = [first_val]
+function generate_arr (fn, first_val, len) {
+    var ret = [first_val]
     for (var i = 0, x = first_val; i < len; i++) {
-        series.push(x = f(x))
+        ret.push(x = fn(x))
     }
-    console.log(series)
+    return ret
+}
 
-    // Find the first repeated element and the period.
+function main (first_val, mu_v, lambda_v, len) {
+    lambda_v >= mu_v || err('X1 must be greater than X2')
+    var fn = cycle_fn(mu_v, lambda_v)
 
+    var arr = generate_arr(fn, first_val, len)
 
-
-    var ret = cycle_floyd(f, first_val)
+    var ret = cycle_floyd(fn, first_val)
     return [ ret.mu, ret.lambda ]
 }
 
