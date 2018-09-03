@@ -94,13 +94,15 @@ function generate_arr (fn, first_val, len) {
     return ret
 }
 
-function main (first_val, mu_v, lambda_v, len) {
+function main (first_val, mu_v, lambda_v, len, use_arr) {
     lambda_v >= mu_v || err('X1 must be greater than X2')
     var fn = cycle_fn(mu_v, lambda_v)
 
     var arr = generate_arr(fn, first_val, len)
+    console.log(arr)
 
-    var ret = cycle_floyd(fn, first_val)
+    var ret = use_arr ? cycle_floyd_arr(arr) : cycle_floyd(fn, first_val)
+
     return [ ret.mu, ret.lambda ]
 }
 
