@@ -31,7 +31,7 @@ function cycle (a, max_lambda) {
                 if (a[i] !== a[i%lam]) {
                     if (i < 2 * lam) {
                         // no pattern established.  increment lambda and try offset after lambda
-                        i = ++lam
+                        i = lam++
                     } else {
                         // pattern established set to i
                         lam = i + 1

@@ -52,6 +52,8 @@ test('cycle', function (t) {
         [ [0,1,0,0,1,0],            9,        3 ],
         [ [0,1,0,0,1,0,0],          9,        3 ],
         [ [0,1,0,0,1,0,0,1],        9,        3 ],
+        '# 5 cycle',
+        [ [1,1,0,0,0],        9,        5 ],
         '# 6 cycle',
         [ [0,1,0,0,1,1,0,1,0,0,1],        9,        6 ],
         [ [0,1,0,0,1,1,0,1,0,0,1,1],        9,        6 ],
@@ -62,48 +64,26 @@ test('cycle', function (t) {
     ], cycle.cycle)
 })
 
-function swap(arr, a, b)
-{
-    var tmp = arr[a];
-    arr[a] = arr[b];
-    arr[b] = tmp;
-}
-
-function generate(n, p, arr) {
-    if (n === 1) {
-        p.push(arr.join());
-    } else {
-        for (var i = 0; i !== n; ++i) {
-            generate(n - 1, p, arr);
-            swap(arr, n % 2 ? 0 : i, n - 1);
-        }
-    }
-}
-
-function permutations(num)
-{
-    var arr = (num + '').split('')
-    var p = [];
-
-
-    generate(arr.length, p, arr);
-    return p;
-}
-
-test.only('cycle many', function (t) {
+test('cycle many', function (t) {
     t.table_assert([
-        [ 'v',  'len' ],
-        [ '0111',   25 ],
-    ], function (v, len) {
-        permutations(v).forEach(function (p) {
-            console.log(p)
-            // var a = []
-            // for (var i=0; i<clen; i++) {
-            //     a[i] = sub[i % sub.length]
-            // }
-            // console.log(a)
-            // console.log('-->', cycle(a, 100))
-        })
-    }, {assert: 'none'})
-    t.end()
+        [ 's',     'exp' ],
+        [ '00',    { '00': 1 } ],
+        [ '000',   { '000': 1 } ],
+        [ '001',   { '100': 3, '001': 3, '010': 2 } ],
+        [ '011',   { '101': 2, '110': 3, '011': 3 } ],
+        [ '0001',  { '1000': 4, '0001': 4, '0010': 3, '0100': 3 } ],
+        [ '0011',  { '1001': 3, '1010': 2, '1100': 4, '0011': 4, '0101': 2, '0110': 3 } ],
+        [ '00001', { '10000': 5, '00001': 5, '00010': 4, '00100': 3, '01000': 4 } ],
+        [ '00011', { '10001': 4, '10010': 3, '10100': 5, '11000': 5, '00011': 5, '00101': 5, '00110': 4, '01001': 3, '01010': 2, '01100': 4 } ],
+    ], function (s) {
+        var arr = t.permut(s.split('')).map(function (a) { return a.join('') })
+        var obj = arr.reduce(function (o, s) { o[s] = 1; return o }, {})
+        var uniq = Object.keys(obj)
+        uniq.sort()
+        return uniq.reduce(function (o, s) {
+            var a = s.split('').map(function (d) { return parseInt(d) })
+            o[s] = cycle.cycle(a)
+            return o
+        }, {})
+    })
 })
