@@ -64,3 +64,15 @@ test('adjust_cycle', function (t) {
         return cycle.cycle_next(Array.prototype.slice.call(cyc), idx, v, max_lambda)
     })
 })
+
+test('cycle', function (t) {
+    t.table_assert([
+        [ 'a',                     'exp' ],
+        [ [],                      [] ],
+        [ [ 1 ],                   [ 1 ] ],
+        [ [ 1, 1 ],                [ 1 ] ],
+        [ [ 1, 2 ],                [ 1, 2 ] ],
+        [ [ 1, 2, 1 ],             [ 1, 2 ] ],
+        [ [ 1, 2, 1, 2 ],          [ 1, 2 ] ],
+        [ [ 1, 2, 1, 2, 1, 1, 1 ], [ 1, 2, 1, 2, 1, 1 ] ],    ], cycle.cycle)
+})

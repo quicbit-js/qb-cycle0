@@ -121,9 +121,18 @@ function adjust_cycle (cyc, idx, v, max_lambda) {
     return cyc
 }
 
+function cycle (a, max_lambda) {
+    var cyc = []
+    for (var i=0; i<a.length; i++) {
+        cyc = cycle_next(cyc, i, a[i], max_lambda)
+    }
+    return cyc
+}
+
 module.exports = {
     _is_clean_repeat: is_clean_repeat,  // exposed for testing
     _best_match_len: subset_length,
     cycle_next: cycle_next,
+    cycle: cycle,
     adjust_cycle: adjust_cycle,
 }
