@@ -16,27 +16,29 @@
 
 // fast resolution of repeating ordered subsets (up to 1000)
 
-function err (msg) { throw Error(msg) }
-
-// for lam > 0
-function adjust_cycle (a, idx, lam, max_lambda) {
-    if (a[idx] === a[idx % lam]) {
-        return lam
-    }
-    return ++idx > max_lambda ? 0 : idx
-}
-
 // a zero-offset cycle detection (including first values in the cycle, no skipping).  Returns array of smallest fitting cycle values
+// max_lambda is ignored for short arrays (set above 4 to have consistent effect)
 function cycle (a, max_lambda) {
     switch (a.length) {
         case 0: return 0
         case 1: return 1
         case 2: return a[0] === a[1] ? 1 : 2
+        case 3: return a[0] === a[1] ? (a[1] === a[2] ? 1 : 3) : (a[2] === a[0] ? 2 : 3)
         default:
-            var lam = 1
-            for (var i=0; i<a.length; i++) {
+            var lam = a[0] === a[1] ? 1 : 2
+            var len = a.length
+            for (var i = 2; i < len; i++) {
                 if (a[i] !== a[i%lam]) {
-                    lam = adjust_cycle(a, i, lam, max_lambda)
+                    if (i < 2 * lam) {
+                        // no pattern established.  increment lambda and try offset after lambda
+                        i = ++lam
+                    } else {
+                        // pattern established set to i
+                        lam = i + 1
+                    }
+                    if (lam > max_lambda) {
+                        return 0
+                    }
                 }
             }
             return lam
@@ -45,5 +47,4 @@ function cycle (a, max_lambda) {
 
 module.exports = {
     cycle: cycle,
-    adjust_cycle: adjust_cycle,
 }
