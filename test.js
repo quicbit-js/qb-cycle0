@@ -15,25 +15,52 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 var test = require('test-kit').tape()
-var floyd = require('./floyd')
+var cycle = require('.')
 
-test('floyd', function (t) {
+/*
+test('is_clean_repeat', function (t) {
     t.table_assert([
-        [ 'start_v',    'mu_v',   'lamda_v',  'len',  'exp' ],
-        [ 1,            3,        5,            17,     [2, 3] ],
-        [ 1,            3,        7,            17,     [2, 5] ],
-        [ 1,            4,        7,            17,     [3, 4] ],
-        [ 1,            6,        7,            17,     [5, 2] ],
-    ], floyd )
+        [ 'a',                    'lim',    'f',    'exp' ],
+        [ [1,0,1,0,1,0],          6,        2,      true ],
+        [ [1,0,1,1,1,0],          6,        2,      false ],
+        [ [1,0,1,1,0,1],          6,        3,      true ],
+        [ [1,0,1,1,0,1],          3,        3,      true ],
+        [ [1,0,1,1,0,1],          6,        2,      false ],
+    ], tset._is_clean_repeat)
 })
+*/
 
-test('floyd', function (t) {
+test('adjust_cycle', function (t) {
     t.table_assert([
-        [ 'start_v',    'mu_v',   'lamda_v',  'len',  'exp' ],
-        [ 1,            3,        5,            17,     [2, 3] ],
-        [ 1,            3,        7,            17,     [2, 5] ],
-        [ 1,            4,        7,            17,     [3, 4] ],
-        [ 1,            6,        7,            17,     [5, 2] ],
-    ], floyd )
+        [ 'cyc',          'idx', 'v', 'exp' ],
+        '# 1 cycle',
+        [ [],             0,     1,   [ 1 ] ],
+        [ [ 1 ],          1,     1,   [ 1 ] ],
+        [ [ 1 ],          2,     1,   [ 1 ] ],
+        [ [ 1 ],          3,     1,   [ 1 ] ],
+        '# 2 cycle',
+        [ [ ],            0,     0,   [ 0 ] ],
+        [ [ 0 ],          1,     1,   [ 0, 1 ] ],
+        [ [ 0, 1 ],       2,     0,   [ 0, 1 ] ],
+        [ [ 0, 1 ],       3,     1,   [ 0, 1 ] ],
+        [ [ 0, 1 ],       4,     0,   [ 0, 1 ] ],
+        [ [ 0, 1 ],       5,     1,   [ 0, 1 ] ],
+        '# 4 cycle',
+        [ [ 0 ],          1,     0,   [ 0 ] ],
+        [ [ 0 ],          2,     1,   [ 0, 0, 1 ] ],
+        [ [ 0, 0, 1 ],    3,     1,   [ 0, 0, 1, 1 ] ],
+        [ [ 0, 0, 1, 1 ], 4,     0,   [ 0, 0, 1, 1 ] ],
+        [ [ 0, 0, 1, 1 ], 5,     0,   [ 0, 0, 1, 1 ] ],
+        [ [ 0, 0, 1, 1 ], 6,     1,   [ 0, 0, 1, 1 ] ],
+        [ [ 0, 0, 1, 1 ], 7,     1,   [ 0, 0, 1, 1 ] ],
+        [ [ 0, 0, 1, 1 ], 8,     0,   [ 0, 0, 1, 1 ] ],
+        '# ... becomes 9, 10, 11...',
+        [ [ 0, 0, 1, 1 ], 8,     1,   [ 0, 0, 1, 1, 0, 0, 1, 1, 1 ] ],
+        [ [ 0, 0, 1, 1 ], 9,     1,   [ 0, 0, 1, 1, 0, 0, 1, 1, 0, 1 ] ],
+        [ [ 0, 0, 1, 1 ], 10,    0,   [ 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0 ] ],
+        [ [ 0, 0, 1, 1 ], 11,    0,   [ 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0 ] ],
+    ], function (cyc, idx, v, max_lambda) {
+        // cyc is modified in the test, so clone it (preserve test input)
+        return cycle.cycle_next(Array.prototype.slice.call(cyc), idx, v, max_lambda)
+    })
 })
-

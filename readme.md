@@ -104,6 +104,7 @@ before applying the "zero-overhead largest factor checks" described above.
 
 
     
-# Finding a subset match that is may or may not be a perfect factor of the superset (may have remander)
+# Finding a subset that may or may not be a perfect factor of the superset (may have remainder)
 
-This problem relates to very large arrays that 
+This problem relates to very large arrays that have patterns that should be discovered 
+prior to completion, and if finding no pattern, should be handled as 
