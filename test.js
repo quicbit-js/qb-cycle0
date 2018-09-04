@@ -17,7 +17,7 @@
 var test = require('test-kit').tape()
 var cycle = require('.')
 
-test.only('cycle', function (t) {
+test('cycle', function (t) {
     t.table_assert([
         [ 'a',                     'max',    'exp' ],
         [ [0,1,0,0],                9,        3 ],
@@ -62,3 +62,48 @@ test.only('cycle', function (t) {
     ], cycle.cycle)
 })
 
+function swap(arr, a, b)
+{
+    var tmp = arr[a];
+    arr[a] = arr[b];
+    arr[b] = tmp;
+}
+
+function generate(n, p, arr) {
+    if (n === 1) {
+        p.push(arr.join());
+    } else {
+        for (var i = 0; i !== n; ++i) {
+            generate(n - 1, p, arr);
+            swap(arr, n % 2 ? 0 : i, n - 1);
+        }
+    }
+}
+
+function permutations(num)
+{
+    var arr = (num + '').split('')
+    var p = [];
+
+
+    generate(arr.length, p, arr);
+    return p;
+}
+
+test.only('cycle many', function (t) {
+    t.table_assert([
+        [ 'v',  'len' ],
+        [ '0111',   25 ],
+    ], function (v, len) {
+        permutations(v).forEach(function (p) {
+            console.log(p)
+            // var a = []
+            // for (var i=0; i<clen; i++) {
+            //     a[i] = sub[i % sub.length]
+            // }
+            // console.log(a)
+            // console.log('-->', cycle(a, 100))
+        })
+    }, {assert: 'none'})
+    t.end()
+})
