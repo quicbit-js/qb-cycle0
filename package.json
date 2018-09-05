@@ -1,11 +1,11 @@
 {
-  "name": "qb-array-pattern",
+  "name": "qb-cycle0",
   "version": "1.0.0",
-  "description": "qb-array-pattern",
-  "homepage": "https://github.com/quicbit-js/qb-array-pattern",
-  "url": "https://github.com/quicbit-js/qb-array-pattern/issues",
+  "description": "qb-cycle0",
+  "homepage": "https://github.com/quicbit-js/qb-cycle0",
+  "url": "https://github.com/quicbit-js/qb-cycle0/issues",
   "email": "support@quicbit.com",
-  "repository": "quicbit-js/qb-array-pattern",
+  "repository": "quicbit-js/qb-cycle0",
   "devDependencies": {
     "tape": "^4.8.0",
     "test-kit": "^2.8.3"

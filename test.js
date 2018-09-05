@@ -15,7 +15,7 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 var test = require('test-kit').tape()
-var cycle = require('.')
+var cycle0 = require('.')
 
 test('cycle', function (t) {
     t.table_assert([
@@ -61,7 +61,7 @@ test('cycle', function (t) {
         '# max lambda',
         [ [0,1,0,0,1,1,0,1,0,0,1,1,0],        5,        0 ],
 
-    ], cycle.cycle)
+    ], cycle0.cycle0)
 })
 
 test('cycle many', function (t) {
@@ -82,8 +82,19 @@ test('cycle many', function (t) {
         uniq.sort()
         return uniq.reduce(function (o, s) {
             var a = s.split('').map(function (d) { return parseInt(d) })
-            o[s] = cycle.cycle(a)
+            o[s] = cycle0.cycle0(a)
             return o
         }, {})
     })
+})
+
+test('reduce', function (t) {
+    t.table_assert([
+        [ 'a',                   'max',               'exp' ],
+        [ [1,2,1,2,1],           9,               [1,2] ],
+        [ [1,2,3,1,2,3,1],       9,              [1,2,3] ],
+        [ [1,2,3,1,2,3,1],       9,              [1,2,3] ],
+        [ [1,2,3,4,5,6,1,2],       9,             [ 1,2,3,4,5,6] ],
+        [ [1,2,3,4,5,6,1,2],       5,             [1,2,3,4,5,6,1,2] ],
+    ], cycle0.reduce)
 })

@@ -18,7 +18,7 @@
 
 // a zero-offset cycle detection (including first values in the cycle, no skipping).  Returns array of smallest fitting cycle values
 // max_lambda is ignored for short arrays (set above 4 to have consistent effect)
-function cycle (a, max_lambda) {
+function cycle0 (a, max_lambda) {
     switch (a.length) {
         case 0: return 0
         case 1: return 1
@@ -45,6 +45,18 @@ function cycle (a, max_lambda) {
     }
 }
 
+function reduce(vals, max_lambda) {
+    max_lambda = max_lambda || 300
+    if (vals.length > 1) {
+        var lambda = cycle0(vals, max_lambda)
+        if (lambda !== 0 && lambda < vals.length) {
+            vals = vals.slice(0, lambda)
+        }
+    }
+    return vals
+}
+
 module.exports = {
-    cycle: cycle,
+    cycle0: cycle0,
+    reduce: reduce,
 }
