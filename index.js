@@ -91,20 +91,20 @@ function min_cycle (fac, a, max_lambda) {
 }
 
 function _cycle0clean (a, max_lambda) {
+    var ret = a.length
     var factors = qbfac.factors(a.length)    // factor other than len and 1
     if (factors.length === 0) {
-        return a.length
+        return ret
     }
-    var ret = a.length
     for (var i=0, fac = factors[i]; i<factors.length && fac < ret; i++) {
         ret = Math.min(ret, min_cycle(factors[i], a, max_lambda))
     }
     return ret
 }
 
-function reduce(vals, max_lambda) {
+function reduce(vals, max_lambda, clean) {
     if (vals.length > 1) {
-        var lambda = cycle0(vals, max_lambda)
+        var lambda = cycle0(vals, max_lambda, clean)
         if (lambda !== 0 && lambda < vals.length) {
             vals = vals.slice(0, lambda)
         }
