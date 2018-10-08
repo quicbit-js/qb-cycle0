@@ -15,7 +15,7 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 var test = require('test-kit').tape()
-var cycle0 = require('.')
+var qbcyc = require('.')
 
 test('cycle', function (t) {
     t.table_assert([
@@ -61,17 +61,17 @@ test('cycle', function (t) {
         '# max lambda',
         [ [0,1,0,0,1,1,0,1,0,0,1,1,0],        5,        0 ],
 
-    ], cycle0.cycle0)
+    ], qbcyc.cycle0)
 })
 
 test('cycle many', function (t) {
     t.table_assert([
         [ 's',     'max_lam', 'clean', 'exp' ],
-        // [ '00',    4,         0,       { '00': 1 } ],
-        // [ '000',   4,         0,       { '000': 1 } ],
-        // [ '001',   4,         0,       { '100': 3, '001': 3, '010': 2 } ],
-        // [ '011',   4,         0,       { '101': 2, '110': 3, '011': 3 } ],
-        // [ '0001',  4,         0,       { '1000': 4, '0001': 4, '0010': 3, '0100': 3 } ],
+        [ '00',    4,         0,       { '00': 1 } ],
+        [ '000',   4,         0,       { '000': 1 } ],
+        [ '001',   4,         0,       { '100': 3, '001': 3, '010': 2 } ],
+        [ '011',   4,         0,       { '101': 2, '110': 3, '011': 3 } ],
+        [ '0001',  4,         0,       { '1000': 4, '0001': 4, '0010': 3, '0100': 3 } ],
         [ '0001',  4,         1,       { '1000': 4, '0001': 4, '0010': 3, '0100': 3 } ],
         [ '0011',  4,         0,       { '1001': 3, '1010': 2, '1100': 4, '0011': 4, '0101': 2, '0110': 3 } ],
         [ '0011',  3,         0,       { '1001': 3, '1010': 2, '1100': 0, '0011': 0, '0101': 2, '0110': 3 } ],
@@ -85,9 +85,10 @@ test('cycle many', function (t) {
         var obj = arr.reduce(function (o, s) { o[s] = 1; return o }, {})
         var uniq = Object.keys(obj)
         uniq.sort()
+        var cyc = clean ? qbcyc.cycle0clean : qbcyc.cycle0
         return uniq.reduce(function (o, s) {
             var a = s.split('').map(function (d) { return parseInt(d) })
-            o[s] = cycle0.cycle0(a, max_lam, clean)
+            o[s] = cyc(a, max_lam)
             return o
         }, {})
     })
@@ -101,5 +102,5 @@ test('reduce', function (t) {
         [ [1,2,3,1,2,3,1],       9,              [1,2,3] ],
         [ [1,2,3,4,5,6,1,2],       9,             [ 1,2,3,4,5,6] ],
         [ [1,2,3,4,5,6,1,2],       5,             [1,2,3,4,5,6,1,2] ],
-    ], cycle0.reduce)
+    ], qbcyc.reduce)
 })

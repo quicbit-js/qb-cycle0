@@ -6,6 +6,9 @@
   "url": "https://github.com/quicbit-js/qb-cycle0/issues",
   "email": "support@quicbit.com",
   "repository": "quicbit-js/qb-cycle0",
+  "dependencies": {
+    "qb-factors": "^1.0.0"
+  },
   "devDependencies": {
     "tape": "^4.8.0",
     "test-kit": "^2.8.3"
