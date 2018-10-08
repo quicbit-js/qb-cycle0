@@ -21,13 +21,23 @@ var qbfac = require('qb-factors')
 // a zero-offset cycle detection (including first values in the cycle, no skipping).  Returns array of smallest fitting cycle values
 // max_lambda is ignored for short arrays (set above 4 to have consistent effect)
 // clean set to true will only return cycles that divide the array with no remainder
-function cycle0 (a, max_lambda) {
+function cycle0 (a, max_lambda, clean) {
     switch (a.length) {
         case 0: return 0
         case 1: return 1
         case 2: return a[0] === a[1] ? 1 : 2
-        case 3: return a[0] === a[1] ? (a[1] === a[2] ? 1 : 3) : (a[2] === a[0] ? 2 : 3)
+        case 3: return a[0] === a[1] ? (a[1] === a[2] ? 1 : 3) : (a[2] === a[0] && !clean ? 2 : 3)
     }
+    if (a[0] === a[1] && a[1] === a[2]) {
+        // check lambda == 1
+        var len = a.length
+        for (var i=3; i<len && a[i-1] === a[i]; i++) {}
+        if (i === len) { return 1 }
+    }
+    return clean ? _cycle0clean(a, max_lambda) : _cycle0(a, max_lambda)
+}
+
+function _cycle0 (a, max_lambda) {
     var len = a.length
     var lam = a[0] === a[1] ? 1 : 2
     for (var i = 2; i < len;) {
@@ -36,22 +46,24 @@ function cycle0 (a, max_lambda) {
         } else {
             i = ++lam
             if (lam > max_lambda) {
-                return 0
+                return len
             }
         }
     }
     return lam
 }
 
-function cycle0clean (a, max_lambda) {
-    switch (a.length) {
-        case 0: return 0
-        case 1: return 1
-        case 2: return a[0] === a[1] ? 1 : 2
-        case 3: return a[0] === a[1] ? (a[1] === a[2] ? 1 : 3) : (a[2] === a[0] ? 2 : 3)
-    }
+function _cycle0clean (a, max_lambda) {
     var len = a.length
-    var lam = a[0] === a[1] ? 1 : 2
+    var factors = qbfac.factors(len)    // factor other than len and 1
+    if (factors.length === 0) { return len }
+    var lam = factors[0]
+    while (i < len) {
+        factors.forEach(function (lam) {
+            var i = lam + 1
+
+        })
+    }
     for (var i = 2; i < len;) {
         if (a[i] === a[i%lam]) {
             i++
@@ -78,6 +90,5 @@ function reduce(vals, max_lambda) {
 
 module.exports = {
     cycle0: cycle0,
-    cycle0clean: cycle0clean,
     reduce: reduce,
 }
