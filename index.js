@@ -92,7 +92,7 @@ function min_cycle (fac, a, max_lambda) {
 
 function _cycle0clean (a, max_lambda) {
     var ret = a.length
-    var factors = qbfac.factors(a.length)    // factor other than len and 1
+    var factors = qbfac.factors(a.length)    // factors other than len and 1
     if (factors.length === 0) {
         return ret
     }
