@@ -54,7 +54,7 @@ function _cycle0 (a, max_lambda) {
     return lam
 }
 
-// return the lowest cycle of a that is a multiple of f, where f is a prime factor of a.lengths
+// return the lowest cycle of a series that is a multiple of f, where f is a prime factor of a.lengths
 function min_cycle (fac, a, max_lambda) {
     if (fac > max_lambda) {
         return a.length
