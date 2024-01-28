@@ -16,7 +16,8 @@
   "scripts": {
     "test": "tape test.js",
     "cov": "tap --coverage-report=html test.js",
-    "preversion": "npm test"
+    "preversion": "npm test",
+    "postversion": "git push && npm publish"
   },
   "keywords": [
     "fast",
