@@ -15,7 +15,8 @@
   },
   "scripts": {
     "test": "tape test.js",
-    "cov": "tap --coverage-report=html test.js"
+    "cov": "tap --coverage-report=html test.js",
+    "preversion": "npm test"
   },
   "keywords": [
     "fast",
