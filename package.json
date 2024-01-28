@@ -5,7 +5,10 @@
   "homepage": "https://github.com/quicbit-js/qb-cycle0",
   "url": "https://github.com/quicbit-js/qb-cycle0/issues",
   "email": "support@quicbit.com",
-  "repository": "quicbit-js/qb-cycle0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quicbit-js/qb-cycle0.git"
+  },
   "dependencies": {
     "qb-factors": "^1.0.0"
   },
