@@ -2,7 +2,7 @@
 
 Find repeating series from the zeroth offset.
 
-Useful for compression that scans files with fixed or semi-known patterns patterns.  
+Useful for compression that scans files with fixed or semi-known patterns.  
 
 This algorithm shouldn't be confused with more popular pattern
 searches which seek out the start of a pattern, "mu".  This algorithm just seeks the cycle from 

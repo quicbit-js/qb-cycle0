@@ -20,7 +20,7 @@ var qbfac = require('qb-factors')
 
 // a zero-offset cycle detection (including first values in the cycle, no skipping).  Returns array of smallest fitting cycle values
 // max_lambda is ignored for short arrays (set above 4 to have consistent effect)
-// clean set to true will only return cycles that divide the array with no remainder
+// clean=true will only return cycles that divide the array with no remainder
 function cycle0 (a, max_lambda, clean) {
     switch (a.length) {
         case 0: return 0
